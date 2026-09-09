@@ -5,39 +5,35 @@ class Personnage {
     this.force=force
   }
   attaquer(cible){
-    console.log(this.nom +" attaque"+" "+cible.nom) 
+    console.log( this.nom+" "+"attaque"+" "+cible.nom+ " " + "!")
     cible.recevoirDegats(this.force)
-
-  };
+  }
   recevoirDegats(nbrdegats){
-    let damage=0
-    if (this.pointsDeVie>0){
-    damage += this.pointsDeVie-nbrdegats
-    console.log("Points de vie restants : "+damage)
+    this.pointsDeVie-=nbrdegats
+    if (this.pointsDeVie<0){
+      this.pointsDeVie=0
     }
-    
+    console.log("les point de vie restans de cible :"+this.pointsDeVie)
+  }
+  estVivant(){
+    if(this.pointsDeVie>0){
+      return true
     }
-    estVivant(){
-        if (this.pointsDeVie>0){
-            return true
-        }
-        return false
-    }
+    return false
+  }
 }
 class Guerrier extends Personnage {
   constructor(nom, pointsDeVie, force, arme) {
-   super(nom, pointsDeVie, force) 
-   this.arme=arme
+    super(nom, pointsDeVie, force)
+    this.arme=arme
   }
   utiliserArme(cible){
-    console.log(this.nom +" "+ "attaque avec"+" "+this.arme+" "+"!")
+    console.log(this.nom+" "+"attaque avec"+" "+this.arme+" "+"!" )
     cible.recevoirDegats(this.force)
-
   }
   attaquer (cible){
     this.utiliserArme(cible)
   }
-
 }
 class Mage extends Personnage {
   constructor(nom, pointsDeVie, force, mana) {
@@ -45,21 +41,22 @@ class Mage extends Personnage {
     this.mana=mana
   }
   lancerSort(cible){
-    if(this.mana<20){
-        return "Pas assez de mana !"
+    if (this.mana<20){
+      return "Pas assez de mana !"
     }
     this.mana-=20
     cible.recevoirDegats(30)
-}
-regenererMana(){
+  }
+  regenererMana(){
     this.mana+=10
     if(this.mana>100){
-        this.mana=100
+      this.mana=100
     }
-}
-attaquer (cible){
+  }
+  attaquer (cible){
     this.lancerSort(cible)
-}
+    console.log(cible)
+  }
 }
 class Paladin extends Guerrier {
   constructor(nom, pointsDeVie, force, arme, pouvoirSoin) {
@@ -68,9 +65,12 @@ class Paladin extends Guerrier {
   }
   soigner(cible){
     cible.pointsDeVie+=this.pouvoirSoin
+    console.log(cible) 
     if(this.pointsDeVie>100){
-        this.pointsDeVie=100
-    }
+      this.pointsDeVie=100
+    } 
+    
+    
   }
 }
 class Archer extends Personnage {
@@ -80,7 +80,7 @@ class Archer extends Personnage {
   }
   tirer(cible){
     if (this.nombreDeFleches===0){
-        return "N'a plus de flèches !"
+      return "N'a plus de flèches !"
     }
     this.nombreDeFleches--
     cible.recevoirDegats(this.force)
@@ -90,5 +90,8 @@ class Archer extends Personnage {
   }
 }
 let personne=new Personnage("amine",100,20)
-let Guerriers=new Guerrier("ahmed",100,10,"M4")
-console.log(Guerriers.attaquer(personne))
+let Guerriers=new Guerrier("ahmed",100,10,"ak")
+let magic=new Mage("aymen",100,20,80)
+let soin=new Paladin("ydewi",100,20,"ak",20)
+let fleche=new Archer("tortoi",100,10,5)
+console.log(magic.attaquer(personne))
